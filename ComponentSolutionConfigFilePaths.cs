@@ -41,9 +41,19 @@ namespace ComponentsConfigPathTests
 				rootDirectory = Path.GetDirectoryName (rootDirectory);
 			}
 
-			string appDataDirectory = Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData);
+			string appDataDirectory = GetAppDataDirectory ();
 			if (!String.IsNullOrEmpty (appDataDirectory)) {
 				yield return Path.Combine (appDataDirectory, "Xamarin", "Components");
+			}
+		}
+
+		static string GetAppDataDirectory ()
+		{
+			if (Platform.IsMac) {
+				string home = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+				return Path.Combine (home, "Library", "Preferences");
+			} else {
+				return Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData);
 			}
 		}
 	}
